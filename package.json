@@ -1,23 +1,49 @@
 {
   "name": "vue3-responsive-dash",
-  "version": "0.1.0",
-  "private": true,
+  "version": "0.0.1",
+  "keywords": [
+    "vuejs",
+    "vue",
+    "vue3",
+    "responsive",
+    "drag",
+    "draggable",
+    "resize",
+    "resizable",
+    "dashboard",
+    "grid",
+    "grid-layout",
+    "components"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Stawlie/vue3-responsive-dash.git"
+  },
+  "files": [
+    "dist",
+    "types/*.d.ts"
+  ],
+  "types": "types/index.d.ts",
+  "author": "Stawlie",
+  "main": "dist/vue3-responsive-dash.common.js",
+  "unpkg": "dist/vue3-responsive-dash.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve  --port=5000",
     "build": "vue-cli-service build",
+    "build:lib": "vue-cli-service build --target lib ./src/components/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "@interactjs/actions": "^1.10.26",
     "@interactjs/auto-start": "^1.10.26",
-    "@interactjs/types": "^1.10.26",
-    "@types/element-resize-detector": "^1.1.6",
-    "core-js": "^3.8.3",
+    "@interactjs/interact": "^1.10.26",
     "element-resize-detector": "^1.2.4",
     "ste-simple-events": "^3.0.11",
     "vue": "^3.2.13"
   },
   "devDependencies": {
+    "@interactjs/types": "^1.10.26",
+    "@types/element-resize-detector": "^1.1.6",
     "@typescript-eslint/eslint-plugin": "^5.4.0",
     "@typescript-eslint/parser": "^5.4.0",
     "@vue/cli-plugin-babel": "~5.0.0",
@@ -25,6 +51,7 @@
     "@vue/cli-plugin-typescript": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "core-js": "^3.35.0",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "sass": "^1.32.7",

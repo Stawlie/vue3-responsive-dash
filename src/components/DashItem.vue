@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import "@interactjs/actions";
 import "@interactjs/auto-start";
-import interact from "@interactjs/interact/index";
+import interact from "@interactjs/interact";
 
 import {
   cssTopLeft,
