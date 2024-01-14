@@ -17,13 +17,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Stawlie/vue3-responsive-dash.git"
+    "url": "git+https://github.com/Stawlie/vue3-responsive-dash.git"
   },
   "files": [
     "dist",
-    "types/*.d.ts"
+    "src/types/*.d.ts"
   ],
-  "types": "types/index.d.ts",
+  "types": "./src/types/index.d.ts",
   "author": "Stawlie",
   "main": "dist/vue3-responsive-dash.common.js",
   "unpkg": "dist/vue3-responsive-dash.umd.min.js",
@@ -57,5 +57,11 @@
     "sass": "^1.32.7",
     "sass-loader": "^12.0.0",
     "typescript": "~4.5.5"
-  }
+  },
+  "description": "Vue 3 version of vue-responsive-dash",
+  "bugs": {
+    "url": "https://github.com/Stawlie/vue3-responsive-dash/issues"
+  },
+  "homepage": "https://github.com/Stawlie/vue3-responsive-dash#readme",
+  "license": "MIT"
 }

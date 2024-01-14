@@ -1,4 +1,4 @@
-declare module "vue-responsive-dash" {
+declare module "vue3-responsive-dash" {
   import { Component } from "vue";
 
   const Dashboard: Component;
