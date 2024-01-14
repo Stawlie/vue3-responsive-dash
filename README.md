@@ -32,7 +32,7 @@ $ npm install vue3-responsive-dash
 
 ```vue
 <script setup>
-import { Dashboard, DashLayout, DashItem } from "vue-3-responsive-dash";
+import { Dashboard, DashLayout, DashItem } from "vue3-responsive-dash";
 import { ref } from "vue";
 
 const layouts = ref([
