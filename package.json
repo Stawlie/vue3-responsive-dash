@@ -21,9 +21,9 @@
   },
   "files": [
     "dist",
-    "src/types/*.d.ts"
+    "types/*.d.ts"
   ],
-  "types": "./src/types/index.d.ts",
+  "types": "./types/index.d.ts",
   "author": "Stawlie",
   "main": "dist/vue3-responsive-dash.common.js",
   "unpkg": "dist/vue3-responsive-dash.umd.min.js",
@@ -38,8 +38,7 @@
     "@interactjs/auto-start": "^1.10.26",
     "@interactjs/interact": "^1.10.26",
     "element-resize-detector": "^1.2.4",
-    "ste-simple-events": "^3.0.11",
-    "vue": "^3.2.13"
+    "ste-simple-events": "^3.0.11"
   },
   "devDependencies": {
     "@interactjs/types": "^1.10.26",
@@ -63,5 +62,8 @@
     "url": "https://github.com/Stawlie/vue3-responsive-dash/issues"
   },
   "homepage": "https://github.com/Stawlie/vue3-responsive-dash#readme",
-  "license": "MIT"
+  "license": "MIT",
+  "peerDependencies": {
+    "vue": "^3.4.13"
+  }
 }
