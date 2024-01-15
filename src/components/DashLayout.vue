@@ -14,6 +14,7 @@ import {
   defineOptions,
 } from "vue";
 import { DashboardClass } from "./dashboard.utils";
+import { PLACEHOLDER_ID } from "./item.utils";
 import { Item } from "@/components/types";
 
 defineOptions({ inheritAttrs: false });
@@ -27,7 +28,7 @@ provide("$layout", () => layout.value);
 const $dashboard = inject<() => DashboardClass>("$dashboard");
 const dashboard = computed(() => ($dashboard ? $dashboard() : null));
 
-const placeholderId = ref("-1Placeholder");
+const placeholderId = ref(PLACEHOLDER_ID);
 const placeholderY = ref(0);
 const placeholderHeight = ref(0);
 const placeholderMaxWidth = ref(false);

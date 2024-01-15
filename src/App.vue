@@ -171,7 +171,6 @@ const draggable = ref(false);
           v-model:width="item.width"
           v-model:height="item.height"
           :draggable="draggable"
-          :resizable="false"
           :locked="!draggable"
           :id="item.id"
           :key="item.id"

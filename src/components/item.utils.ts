@@ -30,6 +30,8 @@ type Defaults = Required<
   rowHeight: number;
 };
 
+export const PLACEHOLDER_ID = "-1Placeholder";
+
 export const DEFAULTS: Defaults = {
   x: 0,
   y: 0,
@@ -141,7 +143,7 @@ export class ItemClass {
     this._id = id;
     this._x = x;
     this._y = y;
-    this._width = width;
+    this._width = id === PLACEHOLDER_ID ? 0 : width;
     this._maxWidth = maxWidth;
     this._minWidth = minWidth;
     this._height = height;

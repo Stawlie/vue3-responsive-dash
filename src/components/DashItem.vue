@@ -125,7 +125,7 @@ function onMoveEnd() {
 }
 
 function onResizeStart() {
-  resizing.value = false;
+  resizing.value = true;
   item.value?._onResizeStart();
   emit("resizeStart", { ...item.value?.toItem() } as Item);
 }
