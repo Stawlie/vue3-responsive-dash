@@ -16,10 +16,10 @@ import {
   inject,
   computed,
   ref,
-  provide,
   WatchStopHandle,
   onMounted,
   onUnmounted,
+  Ref,
 } from "vue";
 import { LayoutClass } from "./layout.utils";
 import { Item } from "@/components/types";
@@ -27,9 +27,9 @@ import { InteractEvent, ResizeEvent } from "@interactjs/types";
 
 type Emits = {
   "update:x": [x: Props["x"]];
-  "update:y": [x: Props["y"]];
-  "update:width": [x: Props["width"]];
-  "update:height": [x: Props["height"]];
+  "update:y": [y: Props["y"]];
+  "update:width": [width: Props["width"]];
+  "update:height": [height: Props["height"]];
   moveStart: [item: Item];
   moving: [item: Item];
   moveEnd: [item: Item];
@@ -46,10 +46,8 @@ const props = withDefaults(defineProps<Props>(), PROPS_DEFAULTS);
 const emit = defineEmits<Emits>();
 
 const item = ref<ItemClass>();
-provide("$item", () => item.value);
 
-const $layout = inject<() => LayoutClass>("$layout");
-const layout = computed(() => ($layout ? $layout() : null));
+const layout = inject<Ref<LayoutClass>>("$layout") as Ref<LayoutClass>;
 
 const itemElement = ref<HTMLDivElement>();
 

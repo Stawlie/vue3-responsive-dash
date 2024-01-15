@@ -12,6 +12,7 @@ import {
   watch,
   WatchStopHandle,
   defineOptions,
+  Ref,
 } from "vue";
 import { DashboardClass } from "./dashboard.utils";
 import { PLACEHOLDER_ID } from "./item.utils";
@@ -23,10 +24,11 @@ const props = withDefaults(defineProps<Props>(), PROPS_DEFAULTS);
 const attrs = useAttrs();
 
 const layout = ref<LayoutClass>();
-provide("$layout", () => layout.value);
+provide("$layout", layout);
 
-const $dashboard = inject<() => DashboardClass>("$dashboard");
-const dashboard = computed(() => ($dashboard ? $dashboard() : null));
+const dashboard = inject<Ref<DashboardClass>>(
+  "$dashboard"
+) as Ref<DashboardClass>;
 
 const placeholderId = ref(PLACEHOLDER_ID);
 const placeholderY = ref(0);

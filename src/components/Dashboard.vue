@@ -13,7 +13,7 @@ const props = withDefaults(defineProps<Props>(), PROPS_DEFAULTS);
 const emit = defineEmits<Emits>();
 
 const dashboard = ref<DashboardClass>();
-provide("$dashboard", () => dashboard.value);
+provide("$dashboard", dashboard);
 
 function onResize(element: { detail: { width: number; height: number } }) {
   if (!dashboard.value) {
