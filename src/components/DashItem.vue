@@ -22,14 +22,11 @@ import {
   Ref,
 } from "vue";
 import { LayoutClass } from "./layout.utils";
-import { Item } from "@/components/types";
+import { Item, LayoutItem } from "@/components/types";
 import { InteractEvent, ResizeEvent } from "@interactjs/types";
 
 type Emits = {
-  "update:x": [x: Props["x"]];
-  "update:y": [y: Props["y"]];
-  "update:width": [width: Props["width"]];
-  "update:height": [height: Props["height"]];
+  "update:modelValue": [item: LayoutItem["parameters"]];
   moveStart: [item: Item];
   moving: [item: Item];
   moveEnd: [item: Item];
@@ -47,7 +44,7 @@ const emit = defineEmits<Emits>();
 
 const item = ref<ItemClass>();
 
-const layout = inject<Ref<LayoutClass>>("$layout") as Ref<LayoutClass>;
+const layout = inject("$layout") as Ref<LayoutClass>;
 
 const itemElement = ref<HTMLDivElement>();
 
@@ -210,6 +207,14 @@ function createPropWatchers() {
           return;
         }
 
+        if (key === "modelValue") {
+          item.value.x = props.modelValue.x;
+          item.value.y = props.modelValue.y;
+          item.value.width = props.modelValue.width;
+          item.value.height = props.modelValue.height;
+          return;
+        }
+
         if (!isKey(item.value, key)) {
           return;
         }
@@ -266,49 +271,32 @@ watch(
 );
 
 watch(
-  () => props.draggable,
+  [
+    () => item.value?.x,
+    () => item.value?.y,
+    () => item.value?.width,
+    () => item.value?.height,
+  ],
   () => {
-    setDraggable();
-  }
-);
-
-watch(
-  () => props.draggable,
-  () => {
-    setDraggable();
-  }
-);
-
-watch(
-  () => item.value?.x,
-  (newValue) => {
-    emit("update:x", newValue);
-  }
-);
-
-watch(
-  () => item.value?.y,
-  (newValue) => {
-    emit("update:y", newValue);
-  }
-);
-
-watch(
-  () => item.value?.width,
-  (newValue) => {
-    emit("update:width", newValue);
-  }
-);
-
-watch(
-  () => item.value?.height,
-  (newValue) => {
-    emit("update:height", newValue);
+    emit("update:modelValue", {
+      x: item.value?.x as number,
+      y: item.value?.y as number,
+      width: item.value?.width as number,
+      height: item.value?.height as number,
+    });
   }
 );
 
 onMounted(() => {
-  item.value = new ItemClass(props);
+  const itemSettings = {
+    ...props,
+    x: props.modelValue.x,
+    y: props.modelValue.y,
+    width: props.modelValue.width,
+    height: props.modelValue.height,
+  };
+
+  item.value = new ItemClass(itemSettings);
 
   interactInstance.value = interact(itemElement.value as HTMLDivElement);
   setDraggable();

@@ -1,4 +1,4 @@
-import { Item, Margin, Subscription } from "@/components/types";
+import { Item, LayoutItem, Margin, Subscription } from "@/components/types";
 import {
   ItemClass,
   getHeightFromPx,
@@ -21,6 +21,7 @@ type Defaults = {
   colWidth: number | boolean;
   maxColWidth: number | boolean;
   minColWidth: number | boolean;
+  items: LayoutItem[];
 };
 
 export const DEFAULTS: Defaults = {
@@ -37,15 +38,16 @@ export const DEFAULTS: Defaults = {
   colWidth: false,
   maxColWidth: false,
   minColWidth: false,
+  items: [],
 };
 
 export type Props = Partial<
   Omit<Defaults, "autoHeight" | "width" | "height">
 > & { breakpoint: string; breakpointWidth?: number; debug?: boolean };
 
-export const PROPS_DEFAULTS: Partial<
-  Omit<Props, "margin"> & { margin: () => Margin }
-> = {
+export const PROPS_DEFAULTS:
+  Omit<Props, "breakpoint" | "margin" | "items"> & { margin: () => Margin, items: () => LayoutItem[] }
+  = {
   numberOfCols: DEFAULTS.numberOfCols,
   useCssTransforms: DEFAULTS.useCssTransforms,
   compact: DEFAULTS.compact,
@@ -57,6 +59,7 @@ export const PROPS_DEFAULTS: Partial<
   colWidth: DEFAULTS.colWidth,
   maxColWidth: DEFAULTS.maxColWidth,
   minColWidth: DEFAULTS.minColWidth,
+  items: () => DEFAULTS.items,
 };
 
 export class LayoutClass {
@@ -489,10 +492,10 @@ export class LayoutClass {
   }
   itemResizing(item: Item) {
     this.itemBeingResized = true;
-    this.placeholder!.minWidth = item.minWidth;
-    this.placeholder!.maxWidth = item.maxWidth;
-    this.placeholder!.minHeight = item.minHeight;
-    this.placeholder!.maxHeight = item.maxHeight;
+    this.placeholder!.minWidth = item.minWidth as number | boolean;
+    this.placeholder!.maxWidth = item.maxWidth as number | boolean;
+    this.placeholder!.minHeight = item.minHeight as number | boolean;
+    this.placeholder!.maxHeight = item.maxHeight as number | boolean;
     this.placeholder!.x = getXFromLeft(
       item.left!,
       this.colWidth as number,
