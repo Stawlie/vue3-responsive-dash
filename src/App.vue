@@ -4,154 +4,117 @@ import DashLayout from "@/components/DashLayout.vue";
 import DashItem from "@/components/DashItem.vue";
 import useDashboard from "@/use/useDashboard";
 import { ref } from "vue";
+import { DashboardLayout } from "./components/types";
 
-const draggable = ref(false);
-
-const { layouts } = useDashboard([
+const LAYOUTS: DashboardLayout[] = [
   {
     breakpoint: "cols10",
     numberOfCols: 10,
-    breakpointWidth: 1919,
-    items: [
-      {
-        id: "1",
-        parameters: { x: 0, y: 0, width: 2, height: 2 },
-        settings: { resizable: true },
-      },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 5, y: 0, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 6, y: 0, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 7, y: 0, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 8, y: 0, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 9, y: 0, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 1920,
+    items: [],
   },
   {
     breakpoint: "cols9",
     numberOfCols: 9,
-    breakpointWidth: 1729,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 5, y: 0, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 6, y: 0, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 7, y: 0, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 8, y: 0, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 1730,
+    items: [],
   },
   {
     breakpoint: "cols8",
     numberOfCols: 8,
-    breakpointWidth: 1539,
-    items: [
-      {
-        id: "1",
-        parameters: { x: 0, y: 0, width: 2, height: 2 },
-        settings: { minWidth: 2, maxHeight: 4, maxWidth: 5 },
-      },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 5, y: 0, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 6, y: 0, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 7, y: 0, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 3, y: 1, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 1540,
+    items: [],
   },
   {
     breakpoint: "cols7",
     numberOfCols: 7,
-    breakpointWidth: 1349,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 5, y: 0, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 6, y: 0, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 3, y: 1, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 4, y: 1, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 1350,
+    items: [],
   },
   {
     breakpoint: "cols6",
     numberOfCols: 6,
-    breakpointWidth: 1159,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 5, y: 0, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 3, y: 1, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 4, y: 1, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 5, y: 1, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 1160,
+    items: [],
   },
   {
     breakpoint: "cols5",
     numberOfCols: 5,
-    breakpointWidth: 969,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 4, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 3, y: 1, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 4, y: 1, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 0, y: 2, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 1, y: 2, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 970,
+    items: [],
   },
   {
     breakpoint: "cols4",
     numberOfCols: 4,
-    breakpointWidth: 779,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 2, y: 0, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 3, y: 1, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 0, y: 2, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 1, y: 2, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 2, y: 2, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 3, y: 2, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 780,
+    items: [],
   },
   {
     breakpoint: "cols3",
     numberOfCols: 3,
-    breakpointWidth: 589,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 0, y: 2, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 2, y: 0, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 2, y: 1, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 2, y: 2, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 0, y: 3, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 1, y: 3, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 2, y: 3, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 590,
+    items: [],
   },
   {
     breakpoint: "cols2",
     numberOfCols: 2,
-    breakpointWidth: 399,
-    items: [
-      { id: "1", parameters: { x: 0, y: 0, width: 2, height: 2 } },
-      { id: "2", parameters: { x: 0, y: 2, width: 2, height: 1 } },
-      { id: "3", parameters: { x: 0, y: 3, width: 1, height: 1 } },
-      { id: "4", parameters: { x: 1, y: 3, width: 1, height: 1 } },
-      { id: "5", parameters: { x: 0, y: 4, width: 1, height: 1 } },
-      { id: "6", parameters: { x: 1, y: 4, width: 1, height: 1 } },
-      { id: "7", parameters: { x: 0, y: 5, width: 1, height: 1 } },
-      { id: "8", parameters: { x: 1, y: 5, width: 1, height: 1 } },
-    ],
+    breakpointWidth: 400,
+    items: [],
   },
-]);
+];
+
+const draggable = ref(false);
+
+const { layouts, addItem } = useDashboard(LAYOUTS);
+
+setTimeout(() => {
+  addItem({
+    id: "1",
+    parameters: { width: 2, height: 2 },
+  });
+  setTimeout(() => {
+    addItem({
+      id: "2",
+      parameters: { width: 2, height: 1 },
+    });
+    setTimeout(() => {
+      addItem({
+        id: "3",
+        parameters: { width: 1, height: 1 },
+      });
+      setTimeout(() => {
+        addItem({
+          id: "4",
+          parameters: { width: 1, height: 1 },
+        });
+        setTimeout(() => {
+          addItem({
+            id: "5",
+            parameters: { width: 1, height: 1 },
+          });
+          setTimeout(() => {
+            addItem({
+              id: "6",
+              parameters: { width: 1, height: 1 },
+            });
+            setTimeout(() => {
+              addItem({
+                id: "7",
+                parameters: { width: 1, height: 1 },
+              });
+              setTimeout(() => {
+                addItem({
+                  id: "8",
+                  parameters: { width: 1, height: 1 },
+                });
+              }, 1000);
+            }, 1000);
+          }, 1000);
+        }, 1000);
+      }, 1000);
+    }, 1000);
+  }, 1000);
+}, 1000);
 </script>
 
 <template>

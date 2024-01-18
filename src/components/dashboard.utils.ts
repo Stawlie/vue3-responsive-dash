@@ -102,7 +102,7 @@ export class DashboardClass {
     return this.breakpoints.reduce((acc, breakpoint) => {
       if (
         typeof breakpoint.setpoint === "undefined" ||
-        breakpoint.setpoint >= this.width
+        breakpoint.setpoint > this.width
       ) {
         return acc;
       }

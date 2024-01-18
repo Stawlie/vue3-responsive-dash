@@ -18,15 +18,19 @@ export type Item = {
   locked?: boolean;
 };
 
-export type LayoutItem = {
-  parameters: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-  },
-  settings?: Partial<Omit<Item, "id" | "x" | "y" | "width" | "height">>;
-} & Pick<Item, "id">;
+export type LayoutParameters = {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+};
+
+export type LayoutSettings = Partial<Omit<Item, "id" | "x" | "y" | "width" | "height">>;
+
+export type LayoutItem = Pick<Item, "id"> & {
+  parameters: LayoutParameters,
+  settings?: LayoutSettings;
+};
 
 export type DashboardLayout = {
   breakpoint: string;
