@@ -1,11 +1,13 @@
 import DashItem from "./DashItem.vue";
 import DashLayout from "./DashLayout.vue";
 import Dashboard from "./Dashboard.vue";
+import useDashboard from "../use/useDashboard";
 
 const VueResponsiveDash = {
   DashItem,
   DashLayout,
   Dashboard,
+  useDashboard
 };
 
 // Declare install function executed by Vue.use()
@@ -34,4 +36,4 @@ if (GlobalVue) {
 }
 
 export default VueResponsiveDash;
-export { DashItem, DashLayout, Dashboard };
+export { DashItem, DashLayout, Dashboard, useDashboard };

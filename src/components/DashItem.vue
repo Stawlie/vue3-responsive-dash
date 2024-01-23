@@ -54,15 +54,14 @@ const resizing = ref(false);
 const unWatch = ref<WatchStopHandle>();
 const hover = ref(false);
 
-const resizingOrDragging = computed(
-  () => (resizing.value || dragging.value) && !props.locked
-);
-
 const useCssTransforms = computed(() => layout.value?.useCssTransforms ?? null);
 
 const classObj = computed(() => ({
-  dragging: resizingOrDragging.value,
+  draggable: props.draggable,
+  dragging: dragging.value && !props.locked,
+  resizing: resizing.value && !props.locked,
   cssTransforms: useCssTransforms.value,
+  locked: props.locked,
 }));
 
 const left = computed(() => item.value?.left ?? 0);
@@ -149,8 +148,16 @@ function setDraggable() {
   interactInstance.value?.draggable({
     enabled: true,
     hold: props.moveHold,
+    mouseButtons: true,
     allowFrom: props.dragAllowFrom ?? undefined,
     ignoreFrom: props.dragIgnoreFrom ?? undefined,
+    // Super Unstable! Need more time to make it work
+    // autoScroll: {
+    //   enabled: true,
+    //   container: props.container
+    //     ? (document.querySelector(props.container) as HTMLElement)
+    //     : window,
+    // },
     listeners: {
       start: () => {
         onMoveStart();
@@ -287,6 +294,18 @@ watch(
   }
 );
 
+function onTouchMove(event: TouchEvent) {
+  if (!dragging.value) {
+    return;
+  }
+
+  if (!event.cancelable) {
+    return;
+  }
+
+  event.preventDefault();
+}
+
 onMounted(() => {
   const itemSettings = {
     ...props,
@@ -299,6 +318,7 @@ onMounted(() => {
   item.value = new ItemClass(itemSettings);
 
   interactInstance.value = interact(itemElement.value as HTMLDivElement);
+  interact.dynamicDrop(true);
   setDraggable();
   setResizable();
 
@@ -345,6 +365,7 @@ onUnmounted(() => {
     :style="cssStyle"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @touchmove="onTouchMove"
     ref="itemElement"
     class="item"
     :class="classObj"
@@ -504,22 +525,17 @@ onUnmounted(() => {
   display: inline-block;
   transition: all 200ms ease;
   transition-property: left, top, right;
-  touch-action: none;
-  user-select: none;
-}
-.item.dragging {
-  transition: none;
-  z-index: 3;
-}
-
-.resize {
-  touch-action: none;
-  user-select: none;
 }
 
 .item.cssTransforms {
   transition-property: transform;
   left: 0;
   right: auto;
+}
+
+.item.dragging,
+.item.resizing {
+  transition: none;
+  z-index: 3;
 }
 </style>

@@ -28,9 +28,7 @@ const dashboard = inject("$dashboard") as Ref<DashboardClass>;
 
 const unWatch = ref<WatchStopHandle>();
 
-const currentBreakpoint = computed(
-  () => dashboard.value?.currentBreakpoint ?? ""
-);
+const currentBreakpoint = computed(() => dashboard.value?.currentBreakpoint);
 
 const dragging = computed(() => layout.value?.itemBeingDragged);
 const resizing = computed(() => layout.value?.itemBeingResized);
@@ -117,13 +115,21 @@ onUnmounted(() => {
 
 <template>
   <div v-if="currentBreakpoint === breakpoint">
-    <div v-if="layout" :style="{ position: 'relative', height, width }">
+    <div
+      v-if="layout"
+      :style="{
+        position: 'relative',
+        height,
+        width,
+      }"
+    >
       <slot />
       <dash-item
         v-show="dragging || resizing"
         :id="PLACEHOLDER_ID"
         :dragging="false"
         :resizable="false"
+        class="placeholder"
       >
         <slot name="placeholder">
           <div class="placeholder"></div>
@@ -149,5 +155,6 @@ onUnmounted(() => {
   width: 100%;
   background-color: red;
   opacity: 0.2;
+  animation: none !important;
 }
 </style>

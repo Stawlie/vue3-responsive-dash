@@ -25,6 +25,7 @@ type Defaults = Required<
   resizeHold: number;
   dragAllowFrom: string | null;
   dragIgnoreFrom: string | null;
+  // container: string | null;
   margin: Margin;
   colWidth: number;
   rowHeight: number;
@@ -50,6 +51,7 @@ export const DEFAULTS: Defaults = {
   resizeHold: 0,
   dragAllowFrom: null,
   dragIgnoreFrom: null,
+  // container: null,
   locked: false,
   margin: { x: 1, y: 1 },
   colWidth: 1,
@@ -81,6 +83,7 @@ export const PROPS_DEFAULTS: Required<Omit<Props, "id" | "margin" | "modelValue"
   resizeHold: DEFAULTS.resizeHold,
   dragAllowFrom: DEFAULTS.dragAllowFrom,
   dragIgnoreFrom: DEFAULTS.dragIgnoreFrom,
+  // container: DEFAULTS.container,
   locked: DEFAULTS.locked,
   margin: () => DEFAULTS.margin,
 };

@@ -127,13 +127,26 @@ function useDashboard(layouts: DashboardLayout[]) {
 
       layout.items.push(madeItem);
     });
-    // if (newItem.parameters.)
-    console.log(newItem, layoutsForUpdate);
+  }
+
+  function removeItem(itemId: LayoutItem["id"], breakpoints: string[] = []) {
+    const layoutsForUpdate = layoutList.value.filter((layout) => breakpoints.length === 0 || breakpoints.includes(layout.breakpoint));
+
+    layoutsForUpdate.map((layout) => {
+      const itemIndex = layout.items.findIndex((item) => item.id === itemId);
+
+      if (itemIndex === -1) {
+        return;
+      }
+
+      layout.items.splice(itemIndex, 1);
+    });
   }
 
   return {
     layouts: layoutList,
     addItem,
+    removeItem,
   };
 }
 
