@@ -18,13 +18,14 @@ type Defaults = Required<
     | "locked"
   >
 > & {
-  resizeEdges: "top left" | "top right" | "bottom left" | "bottom right";
+  resizeEdges: "top" | "bottom" | "left" | "right" | "top left" | "top right" | "bottom left" | "bottom right";
   resizableZIndex: number;
   resizeHandleSize: number;
   moveHold: number;
   resizeHold: number;
   dragAllowFrom: string | null;
   dragIgnoreFrom: string | null;
+  // container: string | null;
   margin: Margin;
   colWidth: number;
   rowHeight: number;
@@ -50,24 +51,27 @@ export const DEFAULTS: Defaults = {
   resizeHold: 0,
   dragAllowFrom: null,
   dragIgnoreFrom: null,
+  // container: null,
   locked: false,
   margin: { x: 1, y: 1 },
   colWidth: 1,
   rowHeight: 1,
 };
 
-export type Props = Partial<Omit<Defaults, "colWidth" | "rowHeight">> &
+export type Props = {
+  modelValue?: Pick<Defaults, "x" | "y" | "width" | "height">
+} & Partial<Omit<Defaults, "colWidth" | "rowHeight" | "x" | "y" | "width" | "height">> &
   Pick<Item, "id">;
 
-export const PROPS_DEFAULTS: Partial<
-  Omit<Props, "id" | "margin"> & { margin: () => Margin }
-> = {
-  x: DEFAULTS.x,
-  y: DEFAULTS.y,
-  width: DEFAULTS.width,
+export const PROPS_DEFAULTS: Required<Omit<Props, "id" | "margin" | "modelValue">> & { modelValue: () => Pick<Defaults, "x" | "y" | "width" | "height">, margin: () => Margin } = {
+  modelValue: () => ({
+    x: DEFAULTS.x,
+    y: DEFAULTS.y,
+    width: DEFAULTS.width,
+    height: DEFAULTS.height,
+  }),
   maxWidth: DEFAULTS.maxWidth,
   minWidth: DEFAULTS.minWidth,
-  height: DEFAULTS.height,
   maxHeight: DEFAULTS.maxHeight,
   minHeight: DEFAULTS.minHeight,
   draggable: DEFAULTS.draggable,
@@ -79,6 +83,7 @@ export const PROPS_DEFAULTS: Partial<
   resizeHold: DEFAULTS.resizeHold,
   dragAllowFrom: DEFAULTS.dragAllowFrom,
   dragIgnoreFrom: DEFAULTS.dragIgnoreFrom,
+  // container: DEFAULTS.container,
   locked: DEFAULTS.locked,
   margin: () => DEFAULTS.margin,
 };

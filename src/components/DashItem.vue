@@ -22,14 +22,11 @@ import {
   Ref,
 } from "vue";
 import { LayoutClass } from "./layout.utils";
-import { Item } from "@/components/types";
+import { Item, LayoutItem } from "@/components/types";
 import { InteractEvent, ResizeEvent } from "@interactjs/types";
 
 type Emits = {
-  "update:x": [x: Props["x"]];
-  "update:y": [y: Props["y"]];
-  "update:width": [width: Props["width"]];
-  "update:height": [height: Props["height"]];
+  "update:modelValue": [item: LayoutItem["parameters"]];
   moveStart: [item: Item];
   moving: [item: Item];
   moveEnd: [item: Item];
@@ -47,7 +44,7 @@ const emit = defineEmits<Emits>();
 
 const item = ref<ItemClass>();
 
-const layout = inject<Ref<LayoutClass>>("$layout") as Ref<LayoutClass>;
+const layout = inject("$layout") as Ref<LayoutClass>;
 
 const itemElement = ref<HTMLDivElement>();
 
@@ -57,15 +54,14 @@ const resizing = ref(false);
 const unWatch = ref<WatchStopHandle>();
 const hover = ref(false);
 
-const resizingOrDragging = computed(
-  () => (resizing.value || dragging.value) && !props.locked
-);
-
 const useCssTransforms = computed(() => layout.value?.useCssTransforms ?? null);
 
 const classObj = computed(() => ({
-  dragging: resizingOrDragging.value,
+  draggable: props.draggable,
+  dragging: dragging.value && !props.locked,
+  resizing: resizing.value && !props.locked,
   cssTransforms: useCssTransforms.value,
+  locked: props.locked,
 }));
 
 const left = computed(() => item.value?.left ?? 0);
@@ -152,8 +148,16 @@ function setDraggable() {
   interactInstance.value?.draggable({
     enabled: true,
     hold: props.moveHold,
+    mouseButtons: true,
     allowFrom: props.dragAllowFrom ?? undefined,
     ignoreFrom: props.dragIgnoreFrom ?? undefined,
+    // Super Unstable! Need more time to make it work
+    // autoScroll: {
+    //   enabled: true,
+    //   container: props.container
+    //     ? (document.querySelector(props.container) as HTMLElement)
+    //     : window,
+    // },
     listeners: {
       start: () => {
         onMoveStart();
@@ -207,6 +211,14 @@ function createPropWatchers() {
       () => props[key],
       () => {
         if (!item.value) {
+          return;
+        }
+
+        if (key === "modelValue") {
+          item.value.x = props.modelValue.x;
+          item.value.y = props.modelValue.y;
+          item.value.width = props.modelValue.width;
+          item.value.height = props.modelValue.height;
           return;
         }
 
@@ -266,51 +278,47 @@ watch(
 );
 
 watch(
-  () => props.draggable,
+  [
+    () => item.value?.x,
+    () => item.value?.y,
+    () => item.value?.width,
+    () => item.value?.height,
+  ],
   () => {
-    setDraggable();
+    emit("update:modelValue", {
+      x: item.value?.x as number,
+      y: item.value?.y as number,
+      width: item.value?.width as number,
+      height: item.value?.height as number,
+    });
   }
 );
 
-watch(
-  () => props.draggable,
-  () => {
-    setDraggable();
+function onTouchMove(event: TouchEvent) {
+  if (!dragging.value) {
+    return;
   }
-);
 
-watch(
-  () => item.value?.x,
-  (newValue) => {
-    emit("update:x", newValue);
+  if (!event.cancelable) {
+    return;
   }
-);
 
-watch(
-  () => item.value?.y,
-  (newValue) => {
-    emit("update:y", newValue);
-  }
-);
-
-watch(
-  () => item.value?.width,
-  (newValue) => {
-    emit("update:width", newValue);
-  }
-);
-
-watch(
-  () => item.value?.height,
-  (newValue) => {
-    emit("update:height", newValue);
-  }
-);
+  event.preventDefault();
+}
 
 onMounted(() => {
-  item.value = new ItemClass(props);
+  const itemSettings = {
+    ...props,
+    x: props.modelValue.x,
+    y: props.modelValue.y,
+    width: props.modelValue.width,
+    height: props.modelValue.height,
+  };
+
+  item.value = new ItemClass(itemSettings);
 
   interactInstance.value = interact(itemElement.value as HTMLDivElement);
+  interact.dynamicDrop(true);
   setDraggable();
   setResizable();
 
@@ -357,6 +365,7 @@ onUnmounted(() => {
     :style="cssStyle"
     @mouseover="hover = true"
     @mouseleave="hover = false"
+    @touchmove="onTouchMove"
     ref="itemElement"
     class="item"
     :class="classObj"
@@ -516,22 +525,17 @@ onUnmounted(() => {
   display: inline-block;
   transition: all 200ms ease;
   transition-property: left, top, right;
-  touch-action: none;
-  user-select: none;
-}
-.item.dragging {
-  transition: none;
-  z-index: 3;
-}
-
-.resize {
-  touch-action: none;
-  user-select: none;
 }
 
 .item.cssTransforms {
   transition-property: transform;
   left: 0;
   right: auto;
+}
+
+.item.dragging,
+.item.resizing {
+  transition: none;
+  z-index: 3;
 }
 </style>

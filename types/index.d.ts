@@ -1,8 +1,8 @@
 declare module "vue3-responsive-dash" {
-  import { ComponentOptionsMixin, ComputedOptions, DefineComponent, MethodOptions } from "vue";
+  import { ComponentOptionsMixin, ComputedOptions, DefineComponent, MethodOptions, Ref } from "vue";
 
   type Item = {
-    id: number | string;
+    id: string;
     x: number;
     y: number;
     top?: number;
@@ -112,21 +112,29 @@ declare module "vue3-responsive-dash" {
   type DashItemProps = {
     /** UUID for the item */
     id: string;
-    /**
-     * Horizontal position of the item (in col units)
-     * @default 0
-     */
-    x?: number;
-    /**
-     * Vertical position of the item (in col units)
-     * @default 0
-     */
-    y?: number;
-    /**
-     * Width (in col units)
+    /** Model value for item parameters */
+    modelValue?: {
+      /**
+       * Horizontal position of the item (in col units)
+       * @default 0
+       */
+      x?: number;
+      /**
+       * Vertical position of the item (in col units)
+       * @default 0
+       */
+      y?: number;
+      /**
+       * Width (in col units)
+       * @default 1
+       */
+      width?: number;
+      /**
+     * Height (in col units)
      * @default 1
      */
-    width?: number;
+      height?: number;
+    };
     /**
      * Max Width (in col units). When not a number it is ignored
      * @default false
@@ -137,11 +145,6 @@ declare module "vue3-responsive-dash" {
      * @default 1
      */
     minWidth?: number | boolean;
-    /**
-     * Height (in col units)
-     * @default 1
-     */
-    height?: number;
     /**
      * Max Height (in col units). When not a number it is ignored
      * @default false
@@ -205,10 +208,10 @@ declare module "vue3-responsive-dash" {
   };
 
   type DashItemEmits = {
-    "update:x": (x: DashItemProps["x"]) => void;
-    "update:y": (y: DashItemProps["y"]) => void;
-    "update:width": (width: DashItemProps["width"]) => void;
-    "update:height": (height: DashItemProps["height"]) => void;
+    "update:x": (x: number) => void;
+    "update:y": (y: number) => void;
+    "update:width": (width: number) => void;
+    "update:height": (height: number) => void;
     moveStart: (item: Item) => void;
     moving: (item: Item) => void;
     moveEnd: (item: Item) => void;
@@ -230,6 +233,44 @@ declare module "vue3-responsive-dash" {
     ComponentOptionsMixin,
     DashItemEmits
   >;
+
+  type LayoutParameters = {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+  };
+
+  type LayoutSettings = Partial<Omit<Item, "id" | "x" | "y" | "width" | "height">>;
+
+  type LayoutItem = Pick<Item, "id"> & {
+    parameters: LayoutParameters,
+    settings?: LayoutSettings;
+  };
+
+  export type DashboardLayout = {
+    breakpoint: string;
+    numberOfCols: number;
+    breakpointWidth: number;
+    items: LayoutItem[];
+  };
+
+  type NewItem = {
+    id: LayoutItem["id"];
+    parameters: {
+      x?: LayoutItem["parameters"]["x"];
+      y?: LayoutItem["parameters"]["y"];
+      width: LayoutItem["parameters"]["width"];
+      height: LayoutItem["parameters"]["height"];
+    };
+    settings?: LayoutItem["settings"];
+  };
+
+  export function useDashboard(layouts: DashboardLayout[]): {
+    layouts: Ref<DashboardLayout[]>;
+    addItem: (newItem: NewItem, breakpoints?: string[]) => void;
+    removeItem: (itemId: LayoutItem["id"], breakpoints?: string[]) => void;
+  }
 
   export { Dashboard, DashLayout, DashItem };
 }

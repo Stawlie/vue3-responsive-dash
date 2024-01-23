@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { LayoutClass, Props, PROPS_DEFAULTS } from "./layout.utils";
-import ItemSetup from "./DashItem.vue";
+import DashItem from "./DashItem.vue";
 import {
   computed,
   inject,
@@ -8,7 +8,6 @@ import {
   onUnmounted,
   provide,
   ref,
-  useAttrs,
   watch,
   WatchStopHandle,
   defineOptions,
@@ -21,24 +20,15 @@ import { Item } from "@/components/types";
 defineOptions({ inheritAttrs: false });
 
 const props = withDefaults(defineProps<Props>(), PROPS_DEFAULTS);
-const attrs = useAttrs();
 
 const layout = ref<LayoutClass>();
 provide("$layout", layout);
 
-const dashboard = inject<Ref<DashboardClass>>(
-  "$dashboard"
-) as Ref<DashboardClass>;
+const dashboard = inject("$dashboard") as Ref<DashboardClass>;
 
-const placeholderId = ref(PLACEHOLDER_ID);
-const placeholderY = ref(0);
-const placeholderHeight = ref(0);
-const placeholderMaxWidth = ref(false);
 const unWatch = ref<WatchStopHandle>();
 
-const currentBreakpoint = computed(
-  () => dashboard.value?.currentBreakpoint ?? ""
-);
+const currentBreakpoint = computed(() => dashboard.value?.currentBreakpoint);
 
 const dragging = computed(() => layout.value?.itemBeingDragged);
 const resizing = computed(() => layout.value?.itemBeingResized);
@@ -78,7 +68,13 @@ function createPropWatchers() {
 }
 
 onMounted(() => {
-  const initialItems: Item[] = (attrs.items as Item[]) ?? [];
+  const initialItems: Item[] = props.items.map((item) => {
+    return {
+      id: item.id,
+      ...item.parameters,
+      ...item?.settings,
+    };
+  });
 
   layout.value = new LayoutClass({ ...props, initialItems });
 
@@ -119,21 +115,26 @@ onUnmounted(() => {
 
 <template>
   <div v-if="currentBreakpoint === breakpoint">
-    <div v-if="layout" :style="{ position: 'relative', height, width }">
+    <div
+      v-if="layout"
+      :style="{
+        position: 'relative',
+        height,
+        width,
+      }"
+    >
       <slot />
-      <item-setup
+      <dash-item
         v-show="dragging || resizing"
-        v-model:y="placeholderY"
-        v-model:height="placeholderHeight"
-        v-model:maxWidth="placeholderMaxWidth"
-        :id="placeholderId"
+        :id="PLACEHOLDER_ID"
         :dragging="false"
         :resizable="false"
+        class="placeholder"
       >
         <slot name="placeholder">
           <div class="placeholder"></div>
         </slot>
-      </item-setup>
+      </dash-item>
     </div>
     <div v-if="debug">
       Layout Breakpoint: {{ breakpoint }} <br />
@@ -154,5 +155,6 @@ onUnmounted(() => {
   width: 100%;
   background-color: red;
   opacity: 0.2;
+  animation: none !important;
 }
 </style>

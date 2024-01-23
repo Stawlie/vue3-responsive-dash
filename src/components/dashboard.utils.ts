@@ -25,6 +25,8 @@ export class DashboardClass {
   private _autoHeight: Defaults["autoHeight"];
   private _width: Defaults["width"];
 
+  private _allowRender = false;
+
   constructor({
     id,
     autoHeight = DEFAULTS.autoHeight,
@@ -94,15 +96,20 @@ export class DashboardClass {
 
   set width(w: Defaults["width"]) {
     this._width = w;
+    this._allowRender = true;
     this.updateCurrentBreakpoint();
     this.updateLayouts();
   }
 
   updateCurrentBreakpoint() {
+    if (!this._allowRender) {
+      return;
+    }
+
     return this.breakpoints.reduce((acc, breakpoint) => {
       if (
         typeof breakpoint.setpoint === "undefined" ||
-        breakpoint.setpoint >= this.width
+        breakpoint.setpoint > this.width
       ) {
         return acc;
       }
