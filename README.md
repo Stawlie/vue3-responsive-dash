@@ -18,6 +18,10 @@ Inspired by React-Grid-Layout & Vue-Grid-Layout
 
 Example: [![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark) -->
 
+## 🤟🏻 New Features and changes in 0.1.2
+
+You can use aspectRatio on Layout component!
+
 ## 🤟🏻 New Features and changes in 0.1.1
 
 For using layout you can use function useDashboard!!!

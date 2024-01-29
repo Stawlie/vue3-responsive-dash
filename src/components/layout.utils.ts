@@ -21,6 +21,7 @@ type Defaults = {
   colWidth: number | boolean;
   maxColWidth: number | boolean;
   minColWidth: number | boolean;
+  aspectRatio: number | `${number}/${number}`;
   items: LayoutItem[];
 };
 
@@ -38,6 +39,7 @@ export const DEFAULTS: Defaults = {
   colWidth: false,
   maxColWidth: false,
   minColWidth: false,
+  aspectRatio: 1,
   items: [],
 };
 
@@ -59,6 +61,7 @@ export const PROPS_DEFAULTS:
   colWidth: DEFAULTS.colWidth,
   maxColWidth: DEFAULTS.maxColWidth,
   minColWidth: DEFAULTS.minColWidth,
+  aspectRatio: DEFAULTS.aspectRatio,
   items: () => DEFAULTS.items,
 };
 
@@ -78,6 +81,7 @@ export class LayoutClass {
   private _colWidth: Defaults["colWidth"];
   private _maxColWidth: Defaults["maxColWidth"];
   private _minColWidth: Defaults["minColWidth"];
+  private _aspectRatio: Defaults["aspectRatio"];
   private _itemBeingDragged = false;
   private _itemBeingResized = false;
   private _initalItemIds: Array<number | string> = [];
@@ -105,6 +109,7 @@ export class LayoutClass {
     colWidth = DEFAULTS.colWidth,
     maxColWidth = DEFAULTS.maxColWidth,
     minColWidth = DEFAULTS.minColWidth,
+    aspectRatio = DEFAULTS.aspectRatio,
     initialItems,
   }: Required<Pick<Defaults, "numberOfCols">> & {
     breakpoint: string;
@@ -126,6 +131,7 @@ export class LayoutClass {
     this._colWidth = colWidth;
     this._maxColWidth = maxColWidth;
     this._minColWidth = minColWidth;
+    this._aspectRatio = aspectRatio;
 
     if (typeof initialItems !== "undefined") {
       this._initalItemIds = initialItems.map((item) => {
@@ -198,9 +204,15 @@ export class LayoutClass {
     let rH = 0;
     if (typeof this._rowHeight == "number") {
       rH = this._rowHeight;
-    } else {
-      rH = this.colWidth as number;
     }
+
+    if (typeof this._aspectRatio === "string") {
+      const [width, height] = this._aspectRatio.split("/");
+      rH = ((+this.colWidth) / +width) * +height;
+    } else if (typeof this._aspectRatio === "number") {
+      rH = ((+this.colWidth) / this._aspectRatio)
+    }
+
     if (typeof this.maxRowHeight == "number") {
       if (rH > this.maxRowHeight) {
         rH = this.maxRowHeight;
@@ -237,6 +249,7 @@ export class LayoutClass {
   }
   get colWidth() {
     let colWidthCalc = 0;
+
     if (typeof this._colWidth == "number") {
       colWidthCalc = this._colWidth;
     } else {
@@ -256,6 +269,12 @@ export class LayoutClass {
       }
     }
     return colWidthCalc;
+  }
+  set aspectRatio(ar: Defaults["aspectRatio"]) {
+    this._aspectRatio = ar;
+  }
+  get aspectRatio() {
+    return this._aspectRatio;
   }
   //Item Methods
   get itemBeingDragged() {

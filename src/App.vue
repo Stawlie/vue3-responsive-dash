@@ -191,6 +191,8 @@ const { layouts, addItem, removeItem } = useDashboard(LAYOUTS);
       v-bind="layout"
       :key="layout.breakpoint"
       :margin="{ x: 20, y: 20 }"
+      :aspect-ratio="2"
+      :max-width="400"
     >
       <dash-item
         v-for="item in layout.items"
@@ -199,6 +201,7 @@ const { layouts, addItem, removeItem } = useDashboard(LAYOUTS);
         :resizable="false"
         :id="item.id"
         :key="item.id"
+        :max-width="400"
         v-bind="item?.settings"
       >
         <div class="content">

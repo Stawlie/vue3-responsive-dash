@@ -104,6 +104,16 @@ declare module "vue3-responsive-dash" {
      * @default false
      */
     minRowHeight?: boolean | number;
+    /**
+     * Aspect ratio for elements. Works the same as css aspect-ratio
+     * @default 1
+     */
+    aspectRatio?: number | `${number}/${number}`;
+    /**
+     * Layout items
+     * @default []
+     */
+    items?: LayoutItem[];
   };
 
   // TODO: Add slots
@@ -248,10 +258,28 @@ declare module "vue3-responsive-dash" {
     settings?: LayoutSettings;
   };
 
+  type Margin = {
+    x: number;
+    y: number;
+  };
+
   export type DashboardLayout = {
     breakpoint: string;
     numberOfCols: number;
     breakpointWidth: number;
+    useCssTransforms?: boolean;
+    compact?: boolean;
+    margin?: Margin;
+    autoHeight?: boolean;
+    width?: number;
+    height?: number;
+    rowHeight?: number | boolean;
+    maxRowHeight?: number | boolean;
+    minRowHeight?: number | boolean;
+    colWidth?: number | boolean;
+    maxColWidth?: number | boolean;
+    minColWidth?: number | boolean;
+    aspectRatio?: number | `${number}/${number}`;
     items: LayoutItem[];
   };
 
