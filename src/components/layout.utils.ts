@@ -203,7 +203,7 @@ export class LayoutClass {
   get rowHeight() {
     let rH = 0;
     if (typeof this._rowHeight == "number") {
-      rH = this._rowHeight;
+      return this._rowHeight;
     }
 
     if (typeof this._aspectRatio === "string") {

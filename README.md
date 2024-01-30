@@ -22,7 +22,7 @@ Example: [![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbo
 
 You can use aspectRatio on Layout component!
 
-## 🤟🏻 New Features and changes in 0.1.1
+## Changes in 0.1.1
 
 For using layout you can use function useDashboard!!!
 It provides adding and deleting functionality.
