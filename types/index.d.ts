@@ -110,6 +110,11 @@ declare module "vue3-responsive-dash" {
      */
     aspectRatio?: number | `${number}/${number}`;
     /**
+     * Variable for removing "padding" around items
+     * @default false
+     */
+    alignContainer?: boolean;
+    /**
      * Layout items
      * @default []
      */
