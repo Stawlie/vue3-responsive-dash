@@ -18,7 +18,11 @@ Inspired by React-Grid-Layout & Vue-Grid-Layout
 
 Example: [![Edit Vue Template](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/vue-responsive-dash-eggbc?fontsize=14&hidenavigation=1&theme=dark) -->
 
-## 🤟🏻 New Features and changes in 0.1.2
+## 🤟🏻 New Features and changes in 0.1.4
+
+You can use alignContainer on Layout component! This prop make items align container so there is no "padding".
+
+## Changes in 0.1.2
 
 You can use aspectRatio on Layout component!
 

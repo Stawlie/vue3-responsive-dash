@@ -191,8 +191,8 @@ const { layouts, addItem, removeItem } = useDashboard(LAYOUTS);
       v-bind="layout"
       :key="layout.breakpoint"
       :margin="{ x: 20, y: 20 }"
-      :aspect-ratio="2"
       :max-width="400"
+      align-container
     >
       <dash-item
         v-for="item in layout.items"
@@ -201,7 +201,6 @@ const { layouts, addItem, removeItem } = useDashboard(LAYOUTS);
         :resizable="false"
         :id="item.id"
         :key="item.id"
-        :max-width="400"
         v-bind="item?.settings"
       >
         <div class="content">
@@ -264,29 +263,8 @@ const { layouts, addItem, removeItem } = useDashboard(LAYOUTS);
 
 #dashExample {
   height: fit-content;
-  overflow-y: scroll;
   overflow-x: hidden;
-  scrollbar-width: thin;
-  scrollbar-color: #dee2e6 transparent;
   flex: 1;
-}
-
-@media (pointer: fine) {
-  #dashExample::-webkit-scrollbar {
-    width: 8px;
-  }
-
-  #dashExample::-webkit-scrollbar-thumb {
-    background: #dee2e6;
-    border-radius: 4px;
-  }
-
-  #dashExample::-webkit-scrollbar-thumb:hover {
-    background: #babdc0;
-  }
-  #dashExample::-webkit-scrollbar-thumb:active {
-    background: #585858;
-  }
 }
 
 .content {

@@ -22,6 +22,7 @@ type Defaults = {
   maxColWidth: number | boolean;
   minColWidth: number | boolean;
   aspectRatio: number | `${number}/${number}`;
+  alignContainer: boolean;
   items: LayoutItem[];
 };
 
@@ -40,6 +41,7 @@ export const DEFAULTS: Defaults = {
   maxColWidth: false,
   minColWidth: false,
   aspectRatio: 1,
+  alignContainer: false,
   items: [],
 };
 
@@ -62,6 +64,7 @@ export const PROPS_DEFAULTS:
   maxColWidth: DEFAULTS.maxColWidth,
   minColWidth: DEFAULTS.minColWidth,
   aspectRatio: DEFAULTS.aspectRatio,
+  alignContainer: DEFAULTS.alignContainer,
   items: () => DEFAULTS.items,
 };
 
@@ -82,6 +85,7 @@ export class LayoutClass {
   private _maxColWidth: Defaults["maxColWidth"];
   private _minColWidth: Defaults["minColWidth"];
   private _aspectRatio: Defaults["aspectRatio"];
+  private _alignContainer: Defaults["alignContainer"];
   private _itemBeingDragged = false;
   private _itemBeingResized = false;
   private _initalItemIds: Array<number | string> = [];
@@ -110,6 +114,7 @@ export class LayoutClass {
     maxColWidth = DEFAULTS.maxColWidth,
     minColWidth = DEFAULTS.minColWidth,
     aspectRatio = DEFAULTS.aspectRatio,
+    alignContainer = DEFAULTS.alignContainer,
     initialItems,
   }: Required<Pick<Defaults, "numberOfCols">> & {
     breakpoint: string;
@@ -132,6 +137,7 @@ export class LayoutClass {
     this._maxColWidth = maxColWidth;
     this._minColWidth = minColWidth;
     this._aspectRatio = aspectRatio;
+    this._alignContainer = alignContainer;
 
     if (typeof initialItems !== "undefined") {
       this._initalItemIds = initialItems.map((item) => {
@@ -254,7 +260,7 @@ export class LayoutClass {
       colWidthCalc = this._colWidth;
     } else {
       colWidthCalc =
-        (this.width - this.margin.x * (this.numberOfCols + 1)) /
+        (this.width - this.margin.x * (this.alignContainer ? this.numberOfCols - 1 : this.numberOfCols + 1)) /
         this.numberOfCols;
     }
 
@@ -275,6 +281,12 @@ export class LayoutClass {
   }
   get aspectRatio() {
     return this._aspectRatio;
+  }
+  set alignContainer(ac: Defaults["alignContainer"]) {
+    this._alignContainer = ac;
+  }
+  get alignContainer() {
+    return this._alignContainer;
   }
   //Item Methods
   get itemBeingDragged() {
@@ -310,9 +322,7 @@ export class LayoutClass {
   //used when colWidth is defined (i.e. not looking or caring about width of window )
   calculateWidth() {
     if (typeof this._colWidth == "number" && typeof this.colWidth == "number") {
-      return (
-        this.numberOfCols * (this.colWidth + this.margin.x) + this.margin.x
-      );
+      return (this.numberOfCols * (this.colWidth + this.margin.x) + (this.alignContainer ? -this.margin.x : this.margin.x));
     }
     return this._width;
   }
@@ -326,7 +336,7 @@ export class LayoutClass {
         maxY = bottomY;
       }
     }
-    return maxY * (this.rowHeight + this.margin.y) + this.margin.y;
+    return Math.round(maxY * (this.rowHeight + this.margin.y) + (this.alignContainer ? -this.margin.y : this.margin.y));
   }
   //DashItem Methods
   addDashItem(d: ItemClass) {
@@ -490,8 +500,8 @@ export class LayoutClass {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      getXFromLeft(item.left!, this.colWidth as number, this.margin),
-      getYFromTop(item.top!, this.rowHeight, this.margin),
+      getXFromLeft(item.left!, this.colWidth as number, this.margin, this.alignContainer),
+      getYFromTop(item.top!, this.rowHeight, this.margin, this.alignContainer),
       true
     );
     items = this.compactLayout(items);
@@ -518,18 +528,18 @@ export class LayoutClass {
     this.placeholder!.x = getXFromLeft(
       item.left!,
       this.colWidth as number,
-      this.margin
+      this.margin, this.alignContainer
     );
-    this.placeholder!.y = getYFromTop(item.top!, this.rowHeight, this.margin);
+    this.placeholder!.y = getYFromTop(item.top!, this.rowHeight, this.margin, this.alignContainer);
     this.placeholder!.width = getWidthFromPx(
       item.widthPx!,
       this.colWidth as number,
-      this.margin
+      this.margin, this.alignContainer
     );
     this.placeholder!.height = getHeightFromPx(
       item.heightPx!,
       this.rowHeight,
-      this.margin
+      this.margin, this.alignContainer
     );
     //Take a copy of items
     const itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
@@ -543,8 +553,8 @@ export class LayoutClass {
     items = this.moveItem(
       items,
       items[placeholderIndex],
-      getXFromLeft(item.left!, this.colWidth as number, this.margin),
-      getYFromTop(item.top!, this.rowHeight, this.margin),
+      getXFromLeft(item.left!, this.colWidth as number, this.margin, this.alignContainer),
+      getYFromTop(item.top!, this.rowHeight, this.margin, this.alignContainer),
       true
     );
     items = this.compactLayout(items);
