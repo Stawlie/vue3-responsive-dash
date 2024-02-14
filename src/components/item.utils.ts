@@ -173,8 +173,8 @@ export class ItemClass {
 
     this._left = getLeftFromX(this._x, this._colWidth, this._margin, this._alignContainer);
     this._top = getTopFromY(this._y, this._rowHeight, this._margin, this._alignContainer);
-    this._widthPx = getWidthInPx(this._width, this._colWidth, this._margin, this._alignContainer);
-    this._heightPx = getHeightInPx(this._height, this._rowHeight, this._margin, this._alignContainer);
+    this._widthPx = getWidthInPx(this._width, this._colWidth, this._margin);
+    this._heightPx = getHeightInPx(this._height, this._rowHeight, this._margin);
   }
   get id() {
     return this._id;
@@ -341,10 +341,10 @@ export class ItemClass {
     }
   }
   updatePositionAndSize() {
-    this.left = getLeftFromX(this.x, this.colWidth, this.margin, this._alignContainer);
-    this.top = getTopFromY(this.y, this.rowHeight, this.margin, this._alignContainer);
-    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin, this._alignContainer);
-    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin, this._alignContainer);
+    this.left = getLeftFromX(this.x, this.colWidth, this.margin, this.alignContainer);
+    this.top = getTopFromY(this.y, this.rowHeight, this.margin, this.alignContainer);
+    this.widthPx = getWidthInPx(this.width, this.colWidth, this.margin);
+    this.heightPx = getHeightInPx(this.height, this.rowHeight, this.margin);
   }
   get draggable() {
     return this._draggable;
@@ -461,7 +461,7 @@ export class ItemClass {
 }
 
 export function getLeftFromX(x: number, colWidth: number, margin: Margin, alignContainer: boolean) {
-  return Math.round(colWidth * x + (alignContainer ? x + 1 : x) * margin.x);
+  return Math.round(colWidth * x + (alignContainer ? x : x + 1) * margin.x);
 }
 
 export function getXFromLeft(l: number, colWidth: number, margin: Margin, alignContainer: boolean) {
@@ -469,33 +469,33 @@ export function getXFromLeft(l: number, colWidth: number, margin: Margin, alignC
 }
 
 export function getTopFromY(y: number, rowHeight: number, margin: Margin, alignContainer: boolean) {
-  return Math.round(rowHeight * y + (alignContainer ? y + 1 : y) * margin.y);
+  return Math.round(rowHeight * y + (alignContainer ? y : y + 1) * margin.y);
 }
 
 export function getYFromTop(t: number, rowHeight: number, margin: Margin, alignContainer: boolean) {
   return Math.round((alignContainer ? t : t - margin.y) / (rowHeight + margin.y));
 }
 
-export function getWidthInPx(w: number, colWidth: number, margin: Margin, alignContainer: boolean) {
-  return Math.round(colWidth * w + Math.max(0, alignContainer ? w : w - 1) * margin.x);
+export function getWidthInPx(w: number, colWidth: number, margin: Margin) {
+  return Math.round(colWidth * w + Math.max(0, w - 1) * margin.x);
 }
 
 export function getWidthFromPx(
   widthPx: number,
   colWidth: number,
-  margin: Margin, alignContainer: boolean
+  margin: Margin
 ) {
   return Math.round((widthPx + margin.x) / (colWidth + margin.x));
 }
 
-export function getHeightInPx(h: number, rowHeight: number, margin: Margin, alignContainer: boolean) {
-  return Math.round(rowHeight * h + Math.max(0, alignContainer ? h : h - 1) * margin.y);
+export function getHeightInPx(h: number, rowHeight: number, margin: Margin) {
+  return Math.round(rowHeight * h + Math.max(0, h - 1) * margin.y);
 }
 
 export function getHeightFromPx(
   heightPx: number,
   rowHeight: number,
-  margin: Margin, alignContainer: boolean
+  margin: Margin
 ) {
   return Math.round((heightPx + margin.y) / (rowHeight + margin.y));
 }

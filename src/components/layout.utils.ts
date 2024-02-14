@@ -469,6 +469,7 @@ export class LayoutClass {
       item.colWidth = this.colWidth as number;
       item.rowHeight = this.rowHeight as number;
       item.margin = this.margin;
+      item.alignContainer = this.alignContainer;
     });
   }
   //Item Methods
@@ -534,12 +535,12 @@ export class LayoutClass {
     this.placeholder!.width = getWidthFromPx(
       item.widthPx!,
       this.colWidth as number,
-      this.margin, this.alignContainer
+      this.margin
     );
     this.placeholder!.height = getHeightFromPx(
       item.heightPx!,
       this.rowHeight,
-      this.margin, this.alignContainer
+      this.margin
     );
     //Take a copy of items
     const itemsCopy = JSON.parse(JSON.stringify(this.items)) as Item[];
