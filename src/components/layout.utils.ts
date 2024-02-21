@@ -1,4 +1,5 @@
 import { Item, LayoutItem, Margin, Subscription } from "@/components/types";
+import { Property } from "csstype";
 import {
   ItemClass,
   getHeightFromPx,
@@ -23,6 +24,8 @@ type Defaults = {
   minColWidth: number | boolean;
   aspectRatio: number | `${number}/${number}`;
   alignContainer: boolean;
+  placeholderColor: Property.Color;
+  placeholderOpacity: Property.Opacity;
   items: LayoutItem[];
 };
 
@@ -42,6 +45,8 @@ export const DEFAULTS: Defaults = {
   minColWidth: false,
   aspectRatio: 1,
   alignContainer: false,
+  placeholderColor: "red",
+  placeholderOpacity: "0.2",
   items: [],
 };
 
@@ -65,6 +70,8 @@ export const PROPS_DEFAULTS:
   minColWidth: DEFAULTS.minColWidth,
   aspectRatio: DEFAULTS.aspectRatio,
   alignContainer: DEFAULTS.alignContainer,
+  placeholderColor: DEFAULTS.placeholderColor,
+  placeholderOpacity: DEFAULTS.placeholderOpacity,
   items: () => DEFAULTS.items,
 };
 
@@ -86,6 +93,8 @@ export class LayoutClass {
   private _minColWidth: Defaults["minColWidth"];
   private _aspectRatio: Defaults["aspectRatio"];
   private _alignContainer: Defaults["alignContainer"];
+  private _placeholderColor: Defaults["placeholderColor"];
+  private _placeholderOpacity: Defaults["placeholderOpacity"];
   private _itemBeingDragged = false;
   private _itemBeingResized = false;
   private _initalItemIds: Array<number | string> = [];
@@ -115,6 +124,8 @@ export class LayoutClass {
     minColWidth = DEFAULTS.minColWidth,
     aspectRatio = DEFAULTS.aspectRatio,
     alignContainer = DEFAULTS.alignContainer,
+    placeholderColor = DEFAULTS.placeholderColor,
+    placeholderOpacity = DEFAULTS.placeholderOpacity,
     initialItems,
   }: Required<Pick<Defaults, "numberOfCols">> & {
     breakpoint: string;
@@ -138,6 +149,8 @@ export class LayoutClass {
     this._minColWidth = minColWidth;
     this._aspectRatio = aspectRatio;
     this._alignContainer = alignContainer;
+    this._placeholderColor = placeholderColor;
+    this._placeholderOpacity = placeholderOpacity;
 
     if (typeof initialItems !== "undefined") {
       this._initalItemIds = initialItems.map((item) => {
@@ -287,6 +300,18 @@ export class LayoutClass {
   }
   get alignContainer() {
     return this._alignContainer;
+  }
+  set placeholderColor(pc: Defaults["placeholderColor"]) {
+    this._placeholderColor = pc;
+  }
+  get placeholderColor() {
+    return this._placeholderColor;
+  }
+  set placeholderOpacity(po: Defaults["placeholderOpacity"]) {
+    this._placeholderOpacity = po;
+  }
+  get placeholderOpacity() {
+    return this._placeholderOpacity;
   }
   //Item Methods
   get itemBeingDragged() {

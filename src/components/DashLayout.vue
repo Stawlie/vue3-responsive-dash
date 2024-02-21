@@ -132,7 +132,7 @@ onUnmounted(() => {
         class="placeholder"
       >
         <slot name="placeholder">
-          <div class="placeholder"></div>
+          <div class="placeholder" :style="{ backgroundColor: placeholderColor, opacity: placeholderOpacity }"></div>
         </slot>
       </dash-item>
     </div>
@@ -153,8 +153,9 @@ onUnmounted(() => {
 .placeholder {
   height: 100%;
   width: 100%;
-  background-color: red;
-  opacity: 0.2;
+}
+
+#item_-1Placeholder {
   animation: none !important;
 }
 </style>

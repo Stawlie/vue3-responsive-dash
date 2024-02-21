@@ -1,5 +1,6 @@
 declare module "vue3-responsive-dash" {
   import { ComponentOptionsMixin, ComputedOptions, DefineComponent, MethodOptions, Ref } from "vue";
+  import { Property } from "csstype";
 
   type Item = {
     id: string;
@@ -109,6 +110,16 @@ declare module "vue3-responsive-dash" {
      * @default 1
      */
     aspectRatio?: number | `${number}/${number}`;
+    /**
+     * Placeholder color
+     * @default "red"
+     */
+    placeholderColor?: Property.Color;
+    /**
+     * Placeholder opacity
+     * @default "0.2"
+     */
+    placeholderOpacity?: Property.Opacity;
     /**
      * Variable for removing "padding" around items
      * @default false
@@ -258,7 +269,7 @@ declare module "vue3-responsive-dash" {
 
   type LayoutSettings = Partial<Omit<Item, "id" | "x" | "y" | "width" | "height">>;
 
-  type LayoutItem = Pick<Item, "id"> & {
+  export type LayoutItem = Pick<Item, "id"> & {
     parameters: LayoutParameters,
     settings?: LayoutSettings;
   };
@@ -285,6 +296,8 @@ declare module "vue3-responsive-dash" {
     maxColWidth?: number | boolean;
     minColWidth?: number | boolean;
     aspectRatio?: number | `${number}/${number}`;
+    placeholderColor?: Property.Color;
+    placeholderOpacity?: Property.Opacity;
     items: LayoutItem[];
   };
 

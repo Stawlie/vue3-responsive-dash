@@ -1,3 +1,5 @@
+import { Property } from "csstype";
+
 export type Item = {
   id: string;
   x: number;
@@ -36,6 +38,22 @@ export type DashboardLayout = {
   breakpoint: string;
   numberOfCols: number;
   breakpointWidth: number;
+  useCssTransforms?: boolean;
+  compact?: boolean;
+  margin?: Margin;
+  autoHeight?: boolean;
+  width?: number;
+  height?: number;
+  rowHeight?: number | boolean;
+  maxRowHeight?: number | boolean;
+  minRowHeight?: number | boolean;
+  colWidth?: number | boolean;
+  maxColWidth?: number | boolean;
+  minColWidth?: number | boolean;
+  aspectRatio?: number | `${number}/${number}`;
+  alignContainer?: boolean;
+  placeholderColor?: Property.Color;
+  placeholderOpacity?: Property.Opacity;
   items: LayoutItem[];
 };
 
